@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">PowerSlope</string>
+    <string name="action_settings">Settings</string>
+    <string name="gpsRawData">GPS Raw Data</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="altitude">Altitude</string>
+    <string name="speed">Speed</string>
+    <string name="notRequested">(not requested)</string>
+    <string name="notAvailable">(not available)</string>
+    <string name="computedData">Computed Data</string>
+    <string name="distancePoint1">Distance from P1</string>
+    <string name="altitudeDifferencePoint1">Altitude diff. from P1</string>
+    <string name="slopePoint1">Slope from P1</string>
+    <string name="speedPoint1">Speed from P1</string>
+    <string name="powerPoint1">Power from P1</string>
+    <string name="error">Error (sigma)</string>
+    <string name="units_degrees">deg</string>
+    <string name="units_meters">m</string>
+    <string name="units_metersPerSecond">m/s</string>
+    <string name="units_percent">%</string>
+    <string name="units_watts">W</string>
+</resources>

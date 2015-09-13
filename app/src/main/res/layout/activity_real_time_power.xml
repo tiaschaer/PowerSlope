@@ -25,6 +25,26 @@
         android:id="@+id/lay_table">
 
         <TableRow>
+            <TextView android:text="@string/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                android:id="@+id/l_time"
+                android:paddingEnd="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notRequested"
+                android:width="150dp"
+                android:id="@+id/tw_time"
+                android:gravity="end" />
+<!--            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="" />-->
+        </TableRow>
+        <TableRow>
             <TextView android:text="@string/latitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,6 +155,25 @@
         android:orientation="horizontal"
         android:layout_marginBottom="10dp">
 
+        <TableRow>
+            <TextView android:text="@string/intervalPoint1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                android:paddingEnd="15dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/notRequested"
+                android:width="150dp"
+                android:id="@+id/tw_intervalPoint1"
+                android:gravity="end" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="@string/units_seconds" />
+        </TableRow>
         <TableRow>
             <TextView android:text="@string/distancePoint1"
                 android:layout_width="wrap_content"
@@ -261,7 +300,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
-                android:text="@string/units_metersPerSecond" />
+                android:text="@string/units_kilometersPerHour" />
         </TableRow>
         <TableRow>
             <TextView android:text="@string/error"
@@ -279,7 +318,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
-                android:text="@string/units_metersPerSecond" />
+                android:text="@string/units_kilometersPerHour" />
         </TableRow>
         <TableRow>
             <TextView android:text="@string/powerPoint1"
@@ -322,7 +361,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Listen"
+        android:text="@string/listen"
         android:id="@+id/but_startListening" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/statusBarDefault"
+        android:id="@+id/tw_statusBar" />
 
 </LinearLayout>

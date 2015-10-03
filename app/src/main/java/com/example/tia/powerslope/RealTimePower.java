@@ -1,10 +1,12 @@
 package com.example.tia.powerslope;
 
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +30,7 @@ public class RealTimePower extends AppCompatActivity {
 
     private static final double msTOs = 1./1000.;
     private static final double mPsTOkmPh = 3.6;
+    private static final double TOpercent = 100.;
     private static final double realTime_averagingInterval = 10000; // [ms]
     private static final double realTime_updateInterval = 1000; // [ms]
     private static final int realTime_valuesNum = (int) Math.floor(realTime_averagingInterval/realTime_updateInterval) + 1;
@@ -59,14 +68,22 @@ public class RealTimePower extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
+/*        int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+        return super.onOptionsItemSelected(item);*/
 
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_userProfilesManagement:
+                Intent intent = new Intent(this, UserProfilesManagement.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public boolean getLocation() {
@@ -129,7 +146,7 @@ public class RealTimePower extends AppCompatActivity {
         }
         twTmp = (TextView) findViewById(R.id.tw_speed);
         if(location.hasSpeed()) {
-            twTmp.setText(String.valueOf(location.getSpeed()));
+            twTmp.setText(String.valueOf(location.getSpeed()*mPsTOkmPh));
         }
         else {
             twTmp.setText(strNotAvailable);
@@ -159,31 +176,58 @@ public class RealTimePower extends AppCompatActivity {
 
     private void read_location_buffer() {
         // DEBUGGING
-        this.twStatus.setText(String.valueOf(this.realTime_bufferInd) +
+/*        this.twStatus.setText(String.valueOf(this.realTime_bufferInd) +
                 "/(" + utc_to_realTime(this.realTime_location[this.realTime_bufferInd].getTime()) +
-                "," + utc_to_realTime(this.realTime_location[0].getTime()) + ")" );
+                "," + utc_to_realTime(this.realTime_location[0].getTime()) + ")" );*/
         // update values in GUI
-        boolean pointOK;
-        pointOK = pm.setRtPoint(msTOs * (double)(this.realTime_location[0].getTime() - this.realTime_location[this.realTime_bufferInd].getTime()),
-                                      this.realTime_location[this.realTime_bufferInd].distanceTo(this.realTime_location[0]));
+        boolean availableGpsInterval;
+        availableGpsInterval = pm.setGpsInterval(
+                msTOs * (double) (this.realTime_location[0].getTime() - this.realTime_location[this.realTime_bufferInd].getTime()),
+                this.realTime_location[this.realTime_bufferInd].distanceTo(this.realTime_location[0]) );
         //TextView twTmp = (TextView) findViewById(R.id.tw_distancePoint1);
         //twTmp.setText(String.valueOf(distancePoint2));
-        if(pointOK) {
-            ((TextView) findViewById(R.id.tw_intervalPoint1)).setText(String.valueOf(pm.getRtInterval()));
-            ((TextView) findViewById(R.id.tw_distancePoint1)).setText(String.valueOf(pm.getRtDistance()));
+        if(availableGpsInterval) {
+            ((TextView) findViewById(R.id.tw_intervalPoint1)).setText(String.valueOf(pm.getGpsInterval()));
+            ((TextView) findViewById(R.id.tw_distancePoint1)).setText(String.valueOf(pm.getGpsDistance()));
         }
         else {
             ((TextView) findViewById(R.id.tw_intervalPoint1)).setText(R.string.notAvailable);
             ((TextView) findViewById(R.id.tw_distancePoint1)).setText(R.string.notAvailable);
         }
         boolean availablePositionAccuracy = this.realTime_location[0].hasAccuracy() &&
-                                         this.realTime_location[this.realTime_bufferInd].hasAccuracy();
-        if (availablePositionAccuracy) {
-            pm.setRtPositionAccuracy(this.realTime_location[0].getAccuracy(),
-                                     this.realTime_location[this.realTime_bufferInd].getAccuracy());
+                                            this.realTime_location[this.realTime_bufferInd].hasAccuracy();
+        if(availablePositionAccuracy) {
+            pm.setGpsPositionAccuracy(this.realTime_location[0].getAccuracy(),
+                    this.realTime_location[this.realTime_bufferInd].getAccuracy() );
             ((TextView)findViewById(R.id.tw_distancePoint1_error)).setText(String.valueOf(pm.getDistanceAccuracy()));
             ((TextView)findViewById(R.id.tw_speedPoint1)).setText(String.valueOf(pm.getVelocity() * mPsTOkmPh));
             ((TextView)findViewById(R.id.tw_speedPoint1_error)).setText(String.valueOf(pm.getVelocityAccuracy()*mPsTOkmPh));
+        }
+        boolean availableAltitude = this.realTime_location[0].hasAltitude() &&
+                                    this.realTime_location[this.realTime_bufferInd].hasAltitude();
+        if(availableAltitude) {
+            pm.setGpsAltitudeDifference(this.realTime_location[0].getAltitude() -
+                                        this.realTime_location[this.realTime_bufferInd].getAltitude());
+            ((TextView)findViewById(R.id.tw_altitudeDifferencePoint1)).setText(String.valueOf(pm.getAltitudeDifference()));
+            ((TextView)findViewById(R.id.tw_slopePoint1)).setText(String.valueOf(pm.getSlope()*TOpercent));
+            if(availablePositionAccuracy) {
+                ((TextView) findViewById(R.id.tw_altitudeDifferencePoint1_error)).setText(String.valueOf(pm.getAltitudeDifferenceAccuracy()));
+                ((TextView) findViewById(R.id.tw_slopePoint1_error)).setText(String.valueOf(pm.getSlopeAccuracy()));
+            }
+        }
+        if(availableGpsInterval && availablePositionAccuracy && availableAltitude) {
+            pm.computePowerTotal();
+            ((TextView)findViewById(R.id.tw_powerPoint1)).setText(String.valueOf(pm.getPowerTotal()));
+/*            // Save to JSON
+            String userProfileJason = pm.getUserProfile().toJson();
+            FileOutputStream fileOutputStream;
+            try {
+                fileOutputStream = openFileOutput(POWERSLOPEUSERFILENAME, Context.MODE_PRIVATE);
+                fileOutputStream.write(userProfileJason.getBytes());
+                fileOutputStream.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }*/
         }
 
     }

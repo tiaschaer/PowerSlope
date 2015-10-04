@@ -27,6 +27,18 @@
     <string name="error">Error</string>
 
     <string name="availableUserProfiles">Available user profiles</string>
+    <string name="bikeMass">Bike mass</string>
+    <string name="symbol_bikeMass">Mbike</string>
+    <string name="initialRiderMass">Initial rider mass</string>
+    <string name="symbol_initialRiderMass">MriderInitial</string>
+    <string name="rollingCoefficient">Rolling coefficient</string>
+    <string name="symbol_rollingCoefficient">Cr</string>
+    <string name="airDensity">Air density</string>
+    <string name="symbol_airDensity">Rho</string>
+    <string name="dragArea">Drag area</string>
+    <string name="symbol_dragArea">Ad</string>
+    <string name="saveProfile">Save profile</string>
+    <string name="resetProfile">Reset profile</string>
 
     <string name="units_degrees">deg</string>
     <string name="units_seconds">s</string>
@@ -40,5 +52,7 @@
     <string name="statusBarDefault">(Status bar)</string>
 
     <string name="filename_userProfiles">PowerSlope_Users.json</string>
+    <string name="json_UserProfiles">UserProfiles</string>
+    <string name="json_LastUserName">LastUserName</string>
 
 </resources>

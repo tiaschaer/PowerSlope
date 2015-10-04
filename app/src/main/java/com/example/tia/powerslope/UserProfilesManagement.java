@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 public class UserProfilesManagement extends AppCompatActivity {
 
@@ -22,10 +23,12 @@ public class UserProfilesManagement extends AppCompatActivity {
         setContentView(R.layout.activity_user_profiles_management);
 
         Spinner userProfileSpinner = (Spinner) findViewById(R.id.spi_userProfiles);
+        String[] userProfiles = this.getUserNames();
         ArrayAdapter<String> userNamesArrayAdapter = new ArrayAdapter<String>(UserProfilesManagement.this,
-                android.R.layout.simple_spinner_item, this.getUserNames());
+                android.R.layout.simple_spinner_item, userProfiles);
         userNamesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userProfileSpinner.setAdapter(userNamesArrayAdapter);
+        userProfileSpinner.setSelection(Arrays.asList(userProfiles).indexOf(this.getLastUserName()));
     }
 
     @Override
@@ -50,7 +53,7 @@ public class UserProfilesManagement extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected JSONArray readUserProfilesFromJson() {
+    protected JSONObject readUserProfilesJson() {
         try {
             InputStream inputStream = openFileInput(getString(R.string.filename_userProfiles));
             int size = inputStream.available();
@@ -59,8 +62,7 @@ public class UserProfilesManagement extends AppCompatActivity {
             inputStream.close();
             String jsonString = new String(buffer, "UTF-8");
             try {
-                JSONObject userProfilesObject = new JSONObject(jsonString);
-                return userProfilesObject.getJSONArray("UserProfiles");
+                return new JSONObject(jsonString);
             } catch (JSONException ex) {
                 ex.printStackTrace();
                 return null;
@@ -71,15 +73,32 @@ public class UserProfilesManagement extends AppCompatActivity {
         }
     }
 
+    protected JSONArray getUserProfiles() {
+        try {
+            return this.readUserProfilesJson().getJSONArray(getString(R.string.json_UserProfiles));
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     protected String[] getUserNames() {
-        JSONArray userProfiles = this.readUserProfilesFromJson();
+        JSONArray userProfiles = this.getUserProfiles();
         try {
             String[] userNames = new String[userProfiles.length()];
             for (int i=0; i<userProfiles.length(); i++) {
-                JSONObject tmpUserProfileJson = userProfiles.getJSONObject(i);
-                userNames[i] = tmpUserProfileJson.getString("name");
+                userNames[i] = userProfiles.getJSONObject(i).getString("name");
             }
             return userNames;
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    protected String getLastUserName() {
+        try {
+            return this.readUserProfilesJson().getString(getString(R.string.json_LastUserName));
         } catch (JSONException ex) {
             ex.printStackTrace();
             return null;

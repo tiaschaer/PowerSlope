@@ -34,28 +34,103 @@
             android:orientation="horizontal"
             android:layout_marginBottom="10dp"
             android:id="@+id/lay_table">
-
             <TableRow>
-                <TextView android:text="@string/time"
+                <TextView android:text="@string/bikeMass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:width="@dimen/data_column_width"
-                    android:id="@+id/l_time" />
-                <TextView
-                    android:layout_width="match_parent"
+                    android:paddingLeft="@dimen/cell_spacing"
+                    android:paddingRight="@dimen/cell_spacing"
+                    android:text="@string/symbol_bikeMass" />
+                <EditText
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/notRequested"
-                    android:width="@dimen/data_column_width"
-                    android:id="@+id/tw_time"
-                    android:gravity="end" />
+                    android:id="@+id/tw_bikeMass"
+                    android:inputType="numberDecimal" />
+            </TableRow>
+            <TableRow>
+                <TextView android:text="@string/initialRiderMass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/cell_spacing"
+                    android:paddingRight="@dimen/cell_spacing"
+                    android:text="@string/symbol_initialRiderMass" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notRequested"
+                    android:id="@+id/tw_initialRiderMass"
+                    android:inputType="numberDecimal" />
+            </TableRow>
+            <TableRow>
+                <TextView android:text="@string/rollingCoefficient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/cell_spacing"
+                    android:paddingRight="@dimen/cell_spacing"
+                    android:text="@string/symbol_rollingCoefficient" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notRequested"
+                    android:id="@+id/tw_rollingCoefficient"
+                    android:inputType="numberDecimal" />
+            </TableRow>
+            <TableRow>
+                <TextView android:text="@string/airDensity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/cell_spacing"
+                    android:paddingRight="@dimen/cell_spacing"
+                    android:text="@string/symbol_airDensity" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notRequested"
+                    android:id="@+id/tw_airDensity"
+                    android:inputType="numberDecimal" />
+            </TableRow>
+            <TableRow>
+                <TextView android:text="@string/dragArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/cell_spacing"
+                    android:paddingRight="@dimen/cell_spacing"
+                    android:text="@string/symbol_dragArea" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notRequested"
+                    android:id="@+id/tw_dragArea"
+                    android:inputType="numberDecimal" />
             </TableRow>
         </TableLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/listen"
-            android:id="@+id/but_startListening" />
+            android:text="@string/saveProfile"
+            android:id="@+id/but_saveProfile" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/resetProfile"
+            android:id="@+id/but_resetProfile" />
 
     </LinearLayout>
 
